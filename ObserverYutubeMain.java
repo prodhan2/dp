@@ -1,76 +1,90 @@
-package LAbCODE;
+package EmailObservers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-interface Observer {
-    void update(float temp);
-}
-
-class Weatherstation {
-
-    private List<Observer> Observers = new ArrayList<>();
-    private float temp;
-    public void setTemp(float temp)
-    {
-        this.temp = temp;
-        notifyObserve();
-    }
-    public void addObservers(Observer o)
-    {
-        Observers.add(o);
-    }
-
-    public void removeObservers(Observer o)
-    {
-        Observers.remove(0);
-    }
-    private void notifyObserve() {
-        for(Observer o : Observers)
-        {
-            o.update(temp);
-        }
+interface Subscriber{
+    void update(String videoTitle);
 
 }
 
+class Youtubechannel{
+   private List<Subscriber> Subscribers = new ArrayList<>();
+   String videoTitle ;
+   public void uploadvideo(String videoTitle)
+   {
+    this.videoTitle = videoTitle;
+    notifySubscriber();
+   }
+   public  void AddSubscriber(Subscriber s )
+   {
+    Subscribers.add(s);
+
+   }
+
+   public void Removesubscriber(Subscriber s)
+   {
+    Subscribers.remove(s);
+   }
+
+
+  private void  notifySubscriber()
+   {
+    for(Subscriber s : Subscribers)
+    {
+        s.update(videoTitle);
+    }
+
+   }
+
 }
 
-class Display implements Observer
+
+class Emailsubscriber implements Subscriber
+{
+    private String email ;
+    public  Emailsubscriber(String email)
+    {
+        this.email = email;
+    }
+    public void update(String videoTitle)
+    {
+System.out.println("EMail is : "+ email + "video title is : " + videoTitle);
+    }
+}
+
+
+class mobileSubscriber implements Subscriber
 {
 
-    private String name ;
+   private  String name ; 
+   public mobileSubscriber (String name)
+   {
 
-    public  Display(String name)
-    {
-        this.name = name;
-    }
+    this.name = name;
+    
+   }
+   public void update(String videoTitle)
+   {
+System.out.println("Moblie scubriver name : " + name + "video title name is :  "+videoTitle);
+   }
 
-    public void update(float temp)
-    {
-
-        System.out.println(name +"    Seees temp   " + temp);
-    }
 
 }
 
 
-
-
-public class ObserverYutubeMain {
-    public static void main(String[] args)
+public class Main {
+    public  static void main(String[] args)
     {
+        Youtubechannel yc = new Youtubechannel();
+        Subscriber  s1 = new Emailsubscriber("hshsh@gmail.com");
+        Subscriber s2 = new mobileSubscriber("Sujan Prodhan");
 
-        Weatherstation station = new Weatherstation();
+        yc.AddSubscriber(s1);
+        yc.AddSubscriber(s2);
 
-        Display d1 = new Display("Sujan");
-        Display d2 = new Display("Prodhan");
-
-        station.addObservers(d2);
-        station.addObservers(d1);
-        station.setTemp(30F);
-        station.setTemp(32.0F);
-
-
+        yc.uploadvideo("hddhvdd csn  tu meriiii");
+        yc.uploadvideo("Mon mane naaaaaaa");
     }
-
+    
 }
