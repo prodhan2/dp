@@ -1,5 +1,4 @@
-package LAbCODE;
-
+package com.tutorialspoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,22 +6,24 @@ import java.util.List;
 // Main class
 public class ObserverPatternDemo {
     public static void main(String[] args) {
+
         Subject subject = new Subject();
 
         new HexaObserver(subject);
         new OctalObserver(subject);
         new BinaryObserver(subject);
 
-        System.out.println("First state change: 15");    
+        System.out.println("First state change: 15");
         subject.setState(15);
 
-        System.out.println("Second state change: 10");    
+        System.out.println("Second state change: 10");
         subject.setState(10);
     }
 }
 
 // Subject class
 class Subject {
+
     private List<Observer> observers = new ArrayList<>();
     private int state;
 
@@ -36,60 +37,72 @@ class Subject {
     }
 
     public void attach(Observer observer) {
-        observers.add(observer);        
+        observers.add(observer);
     }
 
     public void notifyAllObservers() {
-        for (Observer observer : observers) {
-            observer.update();
+        for (Observer o : observers) {
+            o.update();
         }
-    }     
+    }
 }
 
-// Abstract Observer
-abstract class Observer {
-    protected Subject subject;
-    public abstract void update();
+// Observer Interface
+interface Observer {
+    void update();
 }
 
 // Binary Observer
-class BinaryObserver extends Observer {
+class BinaryObserver implements Observer {
+
+    private Subject subject;
 
     public BinaryObserver(Subject subject) {
         this.subject = subject;
-        this.subject.attach(this);
+        subject.attach(this);
     }
 
     @Override
     public void update() {
-        System.out.println("Binary String: " + Integer.toBinaryString(subject.getState()));
+        System.out.println(
+            "Binary String: " + Integer.toBinaryString(subject.getState())
+        );
     }
 }
 
 // Octal Observer
-class OctalObserver extends Observer {
+class OctalObserver implements Observer {
+
+    private Subject subject;
 
     public OctalObserver(Subject subject) {
         this.subject = subject;
-        this.subject.attach(this);
+        subject.attach(this);
     }
 
     @Override
     public void update() {
-        System.out.println("Octal String: " + Integer.toOctalString(subject.getState()));
+        System.out.println(
+            "Octal String: " + Integer.toOctalString(subject.getState())
+        );
     }
 }
 
-// Hexadecimal Observer
-class HexaObserver extends Observer {
+// Hexa Observer
+class HexaObserver implements Observer {
+
+    private Subject subject;
 
     public HexaObserver(Subject subject) {
         this.subject = subject;
-        this.subject.attach(this);
+        subject.attach(this);
     }
 
     @Override
     public void update() {
-        System.out.println("Hex String: " + Integer.toHexString(subject.getState()).toUpperCase());
+        System.out.println(
+            "Hex String: " +
+            Integer.toHexString(subject.getState()).toUpperCase()
+        );
     }
 }
